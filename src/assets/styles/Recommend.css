@@ -2,9 +2,9 @@
 
 .recommend-course {
     width: 100%;
-    padding: 20px;
     box-sizing: border-box;
     text-align: center;
+    background-color: rgb(222, 219, 219);
 }
 
 .user-course {
@@ -29,9 +29,10 @@
 }
 
 .course-image {
-    width: 150px; /* 각 이미지의 너비를 설정합니다. */
-    height: 150px; /* 각 이미지의 높이를 설정합니다. */
-    object-fit: cover; /* 이미지가 잘리지 않고 적절히 맞추도록 설정합니다. */
+    width: 200px; /* 너비를 늘림 */
+    height: 160px; /* 높이를 늘림 */
+    max-height: 200px; /* 최대 높이를 조정 (선택사항) */
+    object-fit: cover; /* 이미지 비율 유지하며 자르기 */
     border-radius: 8px; /* 이미지의 모서리를 둥글게 만듭니다. */
     margin-bottom: 5px; /* 이미지 아래 여백을 조정합니다. */
 }

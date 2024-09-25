@@ -250,7 +250,6 @@ function MainUpper({ token }) {
     <div className='mainupper'>
       <div className='main-image'>
       <img className='main' src={main} alt="main" />
-      <h2 className='gangchu'>강원도 액티비티 사이트 강추!</h2>
       </div>
       <div className='recommendplace'>
         <h2>강추에서 추천하는 장소!</h2>
