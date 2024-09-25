@@ -1,22 +1,14 @@
 .CreateMyCourseContainer {
     display: flex;
     flex-direction: column;
-    align-items: left;
     padding: 100px;
     max-width: 1440px;
-    margin: 0 auto;
+    margin: -10% auto;
     position: relative;
 }
 
-.CreateMyCourseMyPlaceList {
-    position: relative;
-    left: 0;
-    margin-left: 0;
-    padding-left: 0;
-}
-
-.CreateMyCourseMyPlaceList h2 {
-    width: 200px;
+.CreateMyCourseFavoritePlaceList h2 {
+    width: 250px;  
     height: 50px;
     background-color: #D5E6F5;
     text-decoration: none;
@@ -28,55 +20,93 @@
     justify-content: center;
     padding: 3px;
     font-family: 'BMHANNAPro', sans-serif;
-    font-size: 25px;
+    font-size: 20px;
+}
+
+.CreateMyCourseFavoritePlaceList {
+    position: relative;
+    width: 100%; 
+    max-width: 1200px; 
+    height: 500px;
+    margin: 50px auto; 
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+.CreateMyCourseExpl h3{
+    font-family: 'BMHANNAPro', sans-serif;
+    font-size: 20px;
 }
 
 .CreateMyCourseCategory {
-    position: relative;
-    width: 700px;
     display: flex;
-    gap: 10px;
-    align-items: center;
     justify-content: center;
-    background-color: rgba(139, 139, 139, 0.2);
-    padding: 10px;
-    left: 25%;
+    align-items: center;
+    gap: 20px; /* 버튼 사이 간격 조절 */
+    padding: 10px 0; /* 상하 패딩 */
+    width: 100%; /* 가로폭을 부모 요소에 맞춤 */
+    border-top: 1px solid lightgray; /* 위쪽 경계선 */
+    border-bottom: 1px solid lightgray; /* 아래쪽 경계선 */
 }
 
 .CreateMyCourseCategory button {
-    display: flex;
-    margin: 10px;
-    background-color: white;
-    border: 1px solid #ccc;
-    padding: 5px 0px;
+    background: none;
+    border: none;
+    font-size: 16px;
+    color: #808080; /* 버튼 텍스트 색상 (회색) */
     cursor: pointer;
-    color: black;
-    font-family: 'BMHANNAAir', sans-serif;
+    padding: 10px 20px;
+    position: relative;
+}
+
+.CreateMyCourseCategory button::after {
+    content: '';
+    display: inline-block;
+    width: 1px;
+    height: 20px;
+    background-color: lightgray;
+    position: absolute;
+    right: -10px;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.CreateMyCourseCategory button:last-child::after {
+    display: none; /* 마지막 버튼의 구분선 없애기 */
 }
 
 .CreateMyCourseImageList {
     position: relative;
-    width: 1000px;
-    height: 200px;
+    width: 900px;
+    height: 150px;
     display: flex;
-    gap: 60px;
+    gap: 30px;
     align-items: center;
     justify-content: center;
-    background-color: rgba(139, 139, 139, 0.2);
-    padding: 10px;
-    left: 15%;
-    margin-top: 100px;
+    padding: 50px;
+    left: 6%;
+    margin: 30px;
 }
 
 .CreateMyCourseImageList img {
     position: relative;
     margin: 10px;
-    width: 150px;
-    height: 150px;
+    width: 200px;
+    height: 200px;
+}
+
+.CreateMyCourseTourCombination {
+    position: relative;
+    width: 100%; 
+    max-width: 1200px; 
+    height: 500px;
+    margin: 50px auto; 
+    padding: 20px;
+    box-sizing: border-box;
 }
 
 .CreateMyCourseTourCombination h2 {
-    width: 200px;
+    width: 250px;
     height: 50px;
     background-color: #D5E6F5;
     text-decoration: none;
@@ -88,28 +118,54 @@
     justify-content: center;
     padding: 3px;
     font-family: 'BMHANNAPro', sans-serif;
-    font-size: 25px;
+    font-size: 20px;
 }
 
 .CreateMyCourseTourCombinationList {
     position: relative;
-    width: 1000px;
-    height: 200px;
+    width: 1200px;
+    height: 300px;
     display: flex;
-    gap: 60px;
+    gap: 40px; /* 아이템 사이 간격을 조금 더 조정 */
     align-items: center;
     justify-content: center;
-    background-color: rgba(139, 139, 139, 0.2);
-    padding: 10px;
-    left: 15%;
+    background-color: rgba(0, 0, 0, 0.05); /* 배경색을 약간 투명하게 변경 */
+    padding: 20px; /* padding을 늘려 공간을 더 여유롭게 */
+    left: -2%;
     margin-top: 100px;
+    border-radius: 10px; /* 모서리 둥글게 */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* 부드러운 그림자 */
+}
+
+.CreateMyCourseTourCombinationList .CreateMyCourseTourItem {
+    position: relative;
+    width: 230px;
+    height: 250px;
+    background-color: white;
+    border-radius: 10px; /* 아이템도 모서리 둥글게 */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* 부드러운 그림자 */
+    transition: transform 0.3s ease, box-shadow 0.3s ease; /* 애니메이션 효과 추가 */
+    overflow: hidden; /* 이미지가 박스를 넘치지 않도록 */
 }
 
 .CreateMyCourseTourCombinationList .CreateMyCourseTourItem img {
-    position: relative;
-    margin: 10px;
-    width: 150px;
-    height: 150px;
+    width: 100%;
+    height: 180px;
+    object-fit: cover; /* 이미지가 박스 크기에 맞게 채워지도록 */
+    border-bottom: 1px solid #ddd; /* 이미지와 제목 사이에 구분선 추가 */
+}
+
+.CreateMyCourseTourCombinationList .CreateMyCourseTourItem:hover {
+    transform: translateY(-10px); /* 마우스 올렸을 때 살짝 떠오르게 */
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2); /* hover 시 그림자 강화 */
+}
+
+.CreateMyCourseTourCombinationList .CreateMyCourseTourItem .image-title {
+    font-family: 'BMHANNAAir', sans-serif;
+    font-size: 18px;
+    color: #333;
+    text-align: center;
+    padding: 10px 0;
 }
 
 .CreateMyCourseConfirm {
@@ -119,12 +175,14 @@
     gap: 60px;
     align-items: center;
     justify-content: center;
-    left: 6%;
 }
 
 .CreateMyCourseConfirm button {
     position: relative;
-    background-color: #f0f0f0;
+    background-color: #D5E6F5;
+    font-family: 'BMHANNAPro', sans-serif;
+    font-size: 20px;
+    color: black;
 }
 
 .CreateMyCourseConfirm button:hover {
@@ -133,18 +191,16 @@
 
 .TotalRoute {
     position: relative;
-    left: 0;
-    margin-left: 0;
-    padding-left: 0;
-}
-
-.map {
-    width: 100%;
-    height: 100%;
+    width: 100%; 
+    max-width: 1200px; 
+    height: 500px;
+    margin: 30px auto; 
+    padding: 20px;
+    box-sizing: border-box;
 }
 
 .TotalRoute h2 {
-    width: 200px;
+    width: 250px;
     height: 50px;
     background-color: #D5E6F5;
     text-decoration: none;
@@ -157,28 +213,39 @@
     padding: 3px;
     margin-top: 100px;
     font-family: 'BMHANNAPro', sans-serif;
-    font-size: 25px;
+    font-size: 20px;
+}
+
+.map {
+    width: 100%;
+    height: 100%;
+    left: -4%;
 }
 
 .map-container {
-    width: 120%;
+    width: 150%;
     max-width: 1440px;
     height: 500px;
     margin: auto;
     position: relative;
     display: flex;
     align-items: center;
-    left: 20%;
+    left: 25%;
     margin-top: 100px;
 }
 
-.Weather {
+.CreateMyCourseWeather {
     position: relative;
-    margin-top: 100px;
+    width: 100%; 
+    max-width: 1200px; 
+    height: 300px;
+    margin: 300px auto; 
+    padding: 20px;
+    box-sizing: border-box;
 }
 
-.Weather h2 {
-    width: 200px;
+.CreateMyCourseWeather h2 {
+    width: 250px;
     height: 50px;
     background-color: #D5E6F5;
     text-decoration: none;
@@ -190,18 +257,19 @@
     justify-content: center;
     padding: 3px;
     font-family: 'BMHANNAPro', sans-serif;
-    font-size: 25px;
+    font-size: 20px;
+    margin-top: 500px;
 }
 
-.Course {
+.CourseContainer {
     position: relative;
     top: 450px;
-    left: -50%;
+    left: -54%;
     background: white;
     border-radius: 5px;
     box-shadow: 0 2px 4px rgba(0,0,0,0.1);
     height: 150px;
-    width: 500px;
+    width: 840px;
     padding: 60px;
 }
 
@@ -226,14 +294,21 @@
     color: #666;
 }
 
+.FavoritePlaceListImageContainer {
+    height: 250px;
+    width: 250px;
+    margin: 30px;
+    background-color: white;
+}
+
 .image-title {
     font-family: 'BMHANNAAir', sans-serif;
-    font-size: 18px;
+    font-size: 20px;
 }
 
 .CourseTitle {
     font-family: 'BMHANNAAir', sans-serif;
-    font-size: 25px;
+    font-size: 20px;
 }
 
 .duration {
@@ -254,19 +329,23 @@
 }
 
 .Slide img:hover {
-    background-color: #666;
+    background-color: #D5E6F5;
 }
 
 .LeftArrow {
     position: absolute;
-    left: 10px;
+    left: -10%;
     top: 100px;
     transform: translateY(-50%);
+    cursor: pointer;
+    z-index: 10;
 }
 
 .RightArrow {
     position: absolute;
-    right: 10px;
+    right: -10%;
     top: 100px;
     transform: translateY(-50%);
+    cursor: pointer;
+    z-index: 10;
 }
