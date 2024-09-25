@@ -203,12 +203,12 @@ const CreateMyCourse = ({ token }) => {
     }
 
     const scrollLeft = () => {
-        setCurrentImageIndex(prevIndex => Math.max(prevIndex - 1, 0));
+        setCurrentImageIndex(prevIndex => (prevIndex === 0 ? Math.ceil(images.length / 4) - 1 : prevIndex - 1));
     }
-
+    
     const scrollRight = () => {
-        setCurrentImageIndex(prevIndex => Math.min(prevIndex + 1, Math.ceil(images.length / 4) - 1));
-    }
+        setCurrentImageIndex(prevIndex => (prevIndex === Math.ceil(images.length / 4) - 1 ? 0 : prevIndex + 1));
+    }    
 
     const saveSelectedImages = () => {
         if (selectedImages.length !== 4) {
@@ -255,38 +255,42 @@ const CreateMyCourse = ({ token }) => {
 
     return (
         <div className="CreateMyCourseContainer">
-            <div className="CreateMyCourseMyPlaceList">
+
+            <div className="CreateMyCourseFavoritePlaceList"> 
                 <h2>찜 리스트</h2>
-            </div>
-
-            <div className="CreateMyCourseCategory">
-                <button onClick={() => category('activity')} className="button">액티비티</button>
-                <button onClick={() => category('restaurant')} className="button">식당</button>
-                <button onClick={() => category('cafe')} className="button">카페</button>
-                <button onClick={() => category('tour')} className="button">관광지</button>
-                <button onClick={() => category('accommodation')} className="button">숙박</button>
-            </div>
-
-            <div className="CreateMyCourseImageList">
-                <div className="Slide">
-                    <img src={LeftArrow} alt="Left Arrow" className="LeftArrow" onClick={scrollLeft} />
+                <div className="CreateMyCourseExpl">
+                    <h3>4개의 플레이스를 선택해주세요!</h3>
                 </div>
-                {images.slice(currentImageIndex * 4, (currentImageIndex + 1) * 4).map((image, index) => (
-                    <div key={index} className="image-container">
-                        <img
-                            src={image.firstImage2 || defaultImage}
-                            alt={image.placeTitle}
-                            onClick={() => selectImage(image)}
-                            className="selectable-image"
-                        />
-                        <div className="image-title">{image.placeTitle}</div>
+
+                <div className="CreateMyCourseCategory">
+                    <button onClick={() => category('activity')} className="button">액티비티</button>
+                    <button onClick={() => category('restaurant')} className="button">식당</button>
+                    <button onClick={() => category('cafe')} className="button">카페</button>
+                    <button onClick={() => category('tour')} className="button">관광지</button>
+                    <button onClick={() => category('accommodation')} className="button">숙박</button>
+                </div>
+
+                <div className="CreateMyCourseImageList">
+                    <div className="Slide">
+                        <img src={LeftArrow} alt="Left Arrow" className="LeftArrow" onClick={scrollLeft} />
                     </div>
-                ))}
-                <div className="Slide">
-                    <img src={RightArrow} alt="Right Arrow" className="RightArrow" onClick={scrollRight} />
+                    {images.slice(currentImageIndex * 4, (currentImageIndex + 1) * 4).map((image, index) => (
+                        <div key={index} className="FavoritePlaceListImageContainer">
+                            <img
+                                src={image.firstImage2 || defaultImage}
+                                alt={image.placeTitle}
+                                onClick={() => selectImage(image)}
+                                className="selectable-image"
+                            />
+                            <div className="image-title">{image.placeTitle}</div>
+                        </div>
+                    ))}
+                    <div className="Slide">
+                        <img src={RightArrow} alt="Right Arrow" className="RightArrow" onClick={scrollRight} />
+                    </div>
                 </div>
             </div>
-
+            
             <div className="CreateMyCourseTourCombination">
                 <h2>관광지 조합</h2>
                 <div className="CreateMyCourseTourCombinationList">
@@ -301,34 +305,32 @@ const CreateMyCourse = ({ token }) => {
 
             <div className="TotalRoute">
                 <h2>경로 총정리</h2>
-            </div>
 
-            <div className='map-container'>
+                <div className='map-container'>
                 <div ref={mapContainer} className="map"></div>
-                <div className="Course">
-                    {selectedImages.map((image, index) => (
-                        <div key={index}>
-                            <div className="CourseItem">
-                                <div className="CourseIndex">{index + 1}</div>
-                                <div className="CourseTitle">{image.placeTitle}</div>
+                    <div className="CourseContainer">
+                        {selectedImages.map((image, index) => (
+                            <div key={index}>
+                                <div className="CourseItem">
+                                    <div className="CourseIndex">{index + 1}</div>
+                                    <div className="CourseTitle">{image.placeTitle}</div>
+                                </div>
+                                {index < selectedImages.length - 1 && (
+                                    <div className="duration"><img src={Car} alt="Car" />{durations[index]}</div>
+                                )}
                             </div>
-                            {index < selectedImages.length - 1 && (
-                                <div className="duration"><img src={Car} alt="Car" />{durations[index]}</div>
-                            )}
-                        </div>
-                    ))}
+                        ))}
+                    </div>
+                </div>
+
+                <div className='CreateMyCourseConfirm'>
+                    <button onClick={saveSelectedImages}>저장</button>
+                    <button onClick={clearSelectedImages}>취소</button>
                 </div>
             </div>
 
-            <div className='CreateMyCourseConfirm'>
-                <button onClick={saveSelectedImages}>저장</button>
-                <button onClick={clearSelectedImages}>취소</button>
-            </div>
-
-            <div className="CreateMyCourse">
-                <div className='Weather'>
-                    <h2>날씨 전망</h2>
-                </div>
+            <div className='CreateMyCourseWeather'>
+                <h2>날씨 전망</h2>
             </div>
         </div>
     );

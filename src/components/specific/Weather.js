@@ -4,10 +4,8 @@ import "../../assets/styles/CreateMyCourse.css"
 const Weather = () => {
 
     return (
-        <div className="CreateMyCourse">
-            <div className='Weather'>
-                <h2>날씨 전망</h2>
-            </div>
+        <div className='CreateMyCourseWeather'>
+            <h2>날씨 전망</h2>
         </div>
     );
 }
