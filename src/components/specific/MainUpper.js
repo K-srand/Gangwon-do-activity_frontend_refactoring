@@ -12,6 +12,7 @@ function MainUpper({ token }) {
   const [locations, setLocations] = useState([]);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [items, setItems] = useState([]);
+  const [fetchedItemlist, setItemlist] = useState([]);
   const [mapInitialized, setMapInitialized] = useState(false);
   const [userId, setUserId] = useState(null);
   //사용자 추천 코스
@@ -48,10 +49,13 @@ function MainUpper({ token }) {
           title: place.placeTitle,
         }));
         setItems(fetchedItems);
+        setItemlist(fetchedItems);
       })
       .catch(error => console.error('Error fetching locations:', error));
   }, []);
 
+
+  
   // 네이버 맵 API 호출
   useEffect(() => {
     const loadNaverMapScript = async () => {
@@ -264,6 +268,20 @@ function MainUpper({ token }) {
           <button onClick={() => category('tour')} className="button">관광지</button>
           <button onClick={() => category('accommodation')} className="button">숙박</button>
         </div>
+      </div>
+
+{/* 2행 5열 이미지 표시 */}
+<div className="image-grid-container">
+        {fetchedItemlist.slice(0, 10).map((item) => ( // 10개의 이미지만 출력
+          <div key={item.id} className="image-grid-item">
+            <img
+              src={item.img || defaultImage} // 이미지가 없으면 기본 이미지 표시
+              alt={item.title}
+              className="grid-image"
+            />
+            <p>{item.title}</p>
+          </div>
+        ))}
       </div>
 
       {/* 장소 리스트 */}
