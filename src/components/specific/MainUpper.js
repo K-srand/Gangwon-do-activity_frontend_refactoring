@@ -261,13 +261,7 @@ function MainUpper({ token }) {
       {/* 맵 api */}
       <div className="map-containers">
         <div ref={mapContainer} className="map"></div>
-        <div className="button-container">
-          <button onClick={() => category('activity')} className="button">액티비티</button>
-          <button onClick={() => category('restaurant')} className="button">식당</button>
-          <button onClick={() => category('cafe')} className="button">카페</button>
-          <button onClick={() => category('tour')} className="button">관광지</button>
-          <button onClick={() => category('accommodation')} className="button">숙박</button>
-        </div>
+        
       </div>
 
 {/* 2행 5열 이미지 표시 */}
@@ -277,13 +271,21 @@ function MainUpper({ token }) {
             <img
               src={item.img || defaultImage} // 이미지가 없으면 기본 이미지 표시
               alt={item.title}
-              className="grid-image"
-            />
+              className="grid-image"/>
             <p>{item.title}</p>
           </div>
         ))}
+           
       </div>
 
+    <div className='main-place-container'>
+      <div className="button-container">
+          <button onClick={() => category('activity')} className="button">액티비티</button>
+          <button onClick={() => category('restaurant')} className="button">식당</button>
+          <button onClick={() => category('cafe')} className="button">카페</button>
+          <button onClick={() => category('tour')} className="button">관광지</button>
+          <button onClick={() => category('accommodation')} className="button">숙박</button>
+      </div>
       {/* 장소 리스트 */}
       <div className="main-cards-container">
         <div className="mainpage-carousel-container">
@@ -307,6 +309,7 @@ function MainUpper({ token }) {
           </button>
         </div>
       </div>
+    </div>
 
       {/* 사용자 추천 코스 */}
       <div className='recommend-course'>

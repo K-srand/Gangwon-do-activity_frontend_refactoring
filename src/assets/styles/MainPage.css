@@ -121,7 +121,7 @@ button img {
 .button-container {
   width: 60%; 
   margin: 0 auto; 
-  position: absolute;
+  position: relative;
   top: 10px;
   left: 17%;
   display: flex;
@@ -129,14 +129,13 @@ button img {
 }
 
 .button-container .button {
-  background-color: white;
-  border: 1px solid #ccc;
-  padding: 10px;
-  width: 100px;
+  background: none;
+  border: none;
+  font-size: 16px;
+  color: #808080; /* 버튼 텍스트 색상 (회색) */
   cursor: pointer;
-  font-family: 'BMHANNAPro', sans-serif;
-  font-size: 18px;
-  color: black;
+  padding: 10px 20px;
+  position: relative;
 }
 
 
