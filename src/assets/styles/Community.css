@@ -132,3 +132,49 @@
   border-radius: 5px;
   width: 50px;
 }
+.post-item-notice {
+  display: flex;
+  align-items: center;
+  padding: 10px;
+  border-bottom: 1px solid #ddd;
+  background-color: #eef1fd;
+}
+
+.post-item-best {
+  display: flex;
+  align-items: center;
+  padding: 10px;
+  border-bottom: 1px solid #ddd;
+  background-color: #f8efef;
+}
+
+.searching {
+  display: flex;
+  align-items: center; 
+  gap: 10px; 
+}
+
+.search-box{
+  padding: 8px; /* 높이 맞추기 위해 패딩 추가 */
+  font-size: 16px;
+  width: 150px; 
+}
+
+.search-input {
+  flex: 1; /* 입력창이 남는 공간을 채움 */
+  padding: 8px;
+  font-size: 20px !important;
+  margin-bottom: 0px !important;
+}
+
+.searching button{
+  position: relative;
+  background-color: #D5E6F5;
+  font-family: 'BMHANNAPro', sans-serif;
+  font-size: 20px;
+  color: black;
+}
+
+.searching button:hover {
+  background-color: #ccc; 
+}
