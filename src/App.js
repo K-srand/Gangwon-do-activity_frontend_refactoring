@@ -37,6 +37,8 @@ import PatchBoard from './pages/PatchBoardPage'
 import LoadMyCourse from './components/specific/LoadMyCourse';
 import RecommendPage from './pages/RecommendPage';
 
+import MainPlaceModal from './components/specific/MainPlaceModal';
+
 
 function App() {
   const [isModalOpen, setModalOpen] = useState(false);
@@ -88,11 +90,13 @@ function App() {
         <Route path="/withdraw" element={<Withdraw/>}/>
         <Route path="/AllUserList" element={<AllUserListPage/>}/>
         <Route path="/Admin" element={<AdminPage/>}/>
+        <Route path="/mainplacemodal" element={<MainPlaceModal/>}/>
         
       </Routes>
       <Modal isOpen={isModalOpen} onClose={closeModal}>
         <Login />
       </Modal>
+      
     </div>
   );
 }
