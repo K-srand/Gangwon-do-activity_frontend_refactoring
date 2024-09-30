@@ -26,6 +26,10 @@ function Community() {
   const [postCount,setPostCount] = useState(0);
   const [userExp, setUserExp] = useState([]);
 
+  const [keyword, setKeyword] = useState('');
+  const [searchField, setSearchField] = useState('title'); // 기본값을 'title'로 설정
+  const [results, setResults] = useState([]);
+
   useEffect(() => {
     setCurrentPage(page);
   }, [page]);
@@ -134,6 +138,17 @@ function Community() {
       return { img: rank5 };
     }
   };
+
+  const handleSearch = async () => {
+    try {
+      const response = await fetch(`http://localhost:4040/api/v1/board/search?field=${searchField}&keyword=${keyword}`);
+      const data = await response.json();
+      setResults(data);
+    } catch (error) {
+      console.error('Error fetching search results:', error);
+    }
+  };
+
   return (
     <div className="community-container">
       <div className="header">
@@ -148,7 +163,7 @@ function Community() {
       <div className="post-list">
         {noticePost.map(post => {
           return (
-            <div key={post.id} className="post-item">
+            <div key={post.id} className="post-item-notice">
               <div className="post-avatar">
                 <img src={rankSuper} alt="dd" />
               </div>
@@ -167,7 +182,7 @@ function Community() {
         {bestPosts.map(post => {
         const { img } = getRankInfo(post.userExp);
         return (
-          <div key={post.id} className="post-item">
+          <div key={post.id} className="post-item-best">
             <div className="post-avatar">
               <img src={img} alt="dd" />
             </div>
@@ -201,6 +216,29 @@ function Community() {
           </div>
         );
       })}
+      </div>
+      <div class="searching">
+      <select className="search-box" value={searchField} onChange={(e) => setSearchField(e.target.value)}>
+        <option value="title">제목</option>
+        <option value="author">작성자</option>
+      </select>
+      <input
+        type="text"
+        className="search-input"
+        value={keyword}
+        onChange={(e) => setKeyword(e.target.value)}
+        placeholder="검색어를 입력하세요"
+      />
+      <button onClick={handleSearch}>검색</button>
+
+      {/* <ul>
+        {results.map((post) => (
+          <li key={post.id}>
+            <h3>{post.title}</h3>
+            <p>작성자: {post.author}</p>
+          </li>
+        ))}
+      </ul> */}
       </div>
       <div className="pagination">
         <button 
