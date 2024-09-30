@@ -6,6 +6,7 @@ import rightArrow from '../../assets/images/MainRightArrow.png';
 import favorite from '../../assets/images/Favorite.png';
 import defaultImage from '../../assets/images/Icon_No_Image.png';
 import main from '../../assets/images/main.png';
+import MainPlaceModal from '../specific/MainPlaceModal';
 
 function MainUpper({ token }) {
   const mapContainer = useRef(null);
@@ -249,6 +250,24 @@ function MainUpper({ token }) {
       window.location.href = `/recommend`;
   }
 
+  //플레이스 모달창
+  const [isModalOpen, setIsModalOpen] = useState(false);
+    const [selectedCourseInfo, setSelectedCourseInfo] = useState(null);
+
+    const openModal = () => {
+        setIsModalOpen(true);
+    };
+
+    const closeModal = () => {
+        setIsModalOpen(false);
+    };
+
+    const handleCourseSelect = (courseInfo) => {
+        console.log('선택된 코스 정보:', courseInfo);
+        setSelectedCourseInfo(courseInfo);
+        setIsModalOpen(false);
+    };
+
 
   return (
     <div className='mainupper'>
@@ -310,6 +329,8 @@ function MainUpper({ token }) {
         </div>
       </div>
     </div>
+
+      <button className="upload-button" onClick={openModal}>플레이스 모달창 테스트용</button><br />{isModalOpen && <MainPlaceModal closeModal={closeModal} onCourseSelect={handleCourseSelect} />}
 
       {/* 사용자 추천 코스 */}
       <div className='recommend-course'>
