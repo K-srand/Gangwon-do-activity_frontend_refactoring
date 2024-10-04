@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
 import '../../assets/styles/MyPage.css';
 import leftArrow from '../../assets/images/MainLeftArrow.png';
@@ -9,10 +9,10 @@ import rank2 from '../../assets/images/Rank2.png';
 import rank3 from '../../assets/images/Rank3.png';
 import rank4 from '../../assets/images/Rank4.png';
 import rank5 from '../../assets/images/Rank5.png';
-
 import defaultImage from '../../assets/images/Icon_No_Image.png';
-
 import { useNavigate } from 'react-router-dom';
+import Footer from '../common/Footer';
+import { Link } from 'react-router-dom';
 
 const PaginatedList = ({ title, fetchUrl, renderItem, itemsPerPage }) => {
   const [data, setData] = useState([]);
@@ -38,8 +38,12 @@ const PaginatedList = ({ title, fetchUrl, renderItem, itemsPerPage }) => {
   };
 
   const handlePageChange = (newPage) => {
-    if (newPage >= 1 && newPage <= totalPages) {
-      setCurrentPage(newPage);
+    if (newPage > totalPages) {
+      setCurrentPage(1); // 마지막 페이지에서 오른쪽 버튼을 누르면 첫 페이지로 이동
+    } else if (newPage < 1) {
+      setCurrentPage(totalPages); // 첫 번째 페이지에서 왼쪽 버튼을 누르면 마지막 페이지로 이동
+    } else {
+      setCurrentPage(newPage); // 그 외에는 해당 페이지로 이동
     }
   };
 
@@ -49,7 +53,6 @@ const PaginatedList = ({ title, fetchUrl, renderItem, itemsPerPage }) => {
       <div className="carousel-container">
         <button 
           onClick={() => handlePageChange(currentPage - 1)} 
-          disabled={currentPage <= 1}
           className="carousel-button left"
         >
           <img src={leftArrow} alt="Previous" />
@@ -59,7 +62,6 @@ const PaginatedList = ({ title, fetchUrl, renderItem, itemsPerPage }) => {
         </div>
         <button 
           onClick={() => handlePageChange(currentPage + 1)} 
-          disabled={currentPage >= totalPages}
           className="carousel-button right"
         >
           <img src={rightArrow} alt="Next" />
@@ -101,8 +103,12 @@ const PaginatedList2 = ({ title, fetchUrl, renderItem, itemsPerPage }) => {
   };
 
   const handlePageChange = (newPage) => {
-    if (newPage >= 1 && newPage <= totalPages) {
-      setCurrentPage(newPage);
+    if (newPage > totalPages) {
+      setCurrentPage(1); // 마지막 페이지에서 오른쪽 버튼을 누르면 첫 페이지로 이동
+    } else if (newPage < 1) {
+      setCurrentPage(totalPages); // 첫 번째 페이지에서 왼쪽 버튼을 누르면 마지막 페이지로 이동
+    } else {
+      setCurrentPage(newPage); // 그 외에는 해당 페이지로 이동
     }
   };
 
@@ -112,7 +118,6 @@ const PaginatedList2 = ({ title, fetchUrl, renderItem, itemsPerPage }) => {
       <div className="carousel-container">
         <button 
           onClick={() => handlePageChange(currentPage - 1)} 
-          disabled={currentPage <= 1}
           className="carousel-button left"
         >
           <img src={leftArrow} alt="Previous" />
@@ -128,7 +133,6 @@ const PaginatedList2 = ({ title, fetchUrl, renderItem, itemsPerPage }) => {
         </div>
         <button 
           onClick={() => handlePageChange(currentPage + 1)} 
-          disabled={currentPage >= totalPages}
           className="carousel-button right"
         >
           <img src={rightArrow} alt="Next" />
@@ -140,6 +144,7 @@ const PaginatedList2 = ({ title, fetchUrl, renderItem, itemsPerPage }) => {
     </div>
   );
 };
+
 const PaginatedList3 = ({ title, fetchUrl, renderItem, itemsPerPage }) => {
   const [data, setData] = useState([]);
   const [totalPages, setTotalPages] = useState(0);
@@ -164,8 +169,12 @@ const PaginatedList3 = ({ title, fetchUrl, renderItem, itemsPerPage }) => {
   };
 
   const handlePageChange = (newPage) => {
-    if (newPage >= 1 && newPage <= totalPages) {
-      setCurrentPage(newPage);
+    if (newPage > totalPages) {
+      setCurrentPage(1); // 마지막 페이지에서 오른쪽 버튼을 누르면 첫 페이지로 이동
+    } else if (newPage < 1) {
+      setCurrentPage(totalPages); // 첫 번째 페이지에서 왼쪽 버튼을 누르면 마지막 페이지로 이동
+    } else {
+      setCurrentPage(newPage); // 그 외에는 해당 페이지로 이동
     }
   };
 
@@ -175,7 +184,6 @@ const PaginatedList3 = ({ title, fetchUrl, renderItem, itemsPerPage }) => {
       <div className="carousel-container3">
         <button 
           onClick={() => handlePageChange(currentPage - 1)} 
-          disabled={currentPage <= 1}
           className="carousel-button left"
         >
           <img src={leftArrow} alt="Previous" />
@@ -185,7 +193,6 @@ const PaginatedList3 = ({ title, fetchUrl, renderItem, itemsPerPage }) => {
         </div>
         <button 
           onClick={() => handlePageChange(currentPage + 1)} 
-          disabled={currentPage >= totalPages}
           className="carousel-button right"
         >
           <img src={rightArrow} alt="Next" />
@@ -198,12 +205,17 @@ const PaginatedList3 = ({ title, fetchUrl, renderItem, itemsPerPage }) => {
   );
 };
 
+
+
 const MyPage = () => {
   const [userExp, setUserExp] = useState("");
   const [rankImg, setRankImg] = useState("");
   const [rankName, setRankName] = useState("");
+  const [userNick, setUserNick] = useState("");
   const token = localStorage.getItem('token');
   const navigate = useNavigate();
+  const mapContainer = useRef(null);
+  const mapRef = useRef(null);
 
   const handleDelete = async (placeNo) => {
     try {
@@ -221,6 +233,7 @@ const MyPage = () => {
       console.error('Error deleting item:', error);
     }
   };
+
 
   const courseDelete = async (myCourseNo) => {
     try {
@@ -240,12 +253,12 @@ const MyPage = () => {
 
   const renderMyPostItem = (item) => (
     <div className="post-item-mypage" key={item.boardNo}>
-      <p>{item.boardTitle}</p>
-      <span className="post-date">{new Date(item.writtenTime).toLocaleDateString()}</span>
-      <hr />
+      <Link to={`/BoardDetail/${item.boardNo}?page=0`}>
+        <p>{item.boardTitle}</p>
+      </Link>
     </div>
   );
-
+  
   const renderFavoriteItem = (item) => (
     <div className="mypage-carousel-item" key={item.placeNo}>
       <img src={item.firstImage || defaultImage} alt={item.placeTitle} />
@@ -263,6 +276,8 @@ const MyPage = () => {
     <div className="mypage-course-options">
       {items.map((course, index) => (
         <div key={index} className="mypage-course-item">
+          {/* const mapx = course.mapx
+          const mapy = course.mapy */}
           <img src={course.firstImage2 || defaultImage} alt={course.placeTitle} className="course-image" />
           <div>{course.placeTitle}</div>
           <button 
@@ -281,8 +296,10 @@ const MyPage = () => {
       const response = await axios.get(`http://localhost:4040/api/v1/mypage/exp`, {
         headers: { 'Authorization': `Bearer ${token}` }
       });
-      const expUser = response.data;
-      setUserExp(expUser);
+      const expUser = response.data.userExp; 
+      setUserExp(expUser); 
+      setUserNick(response.data.userNick); 
+
       if(expUser < 10){
         setRankImg(rank1);
         setRankName("응애감자");
@@ -307,7 +324,6 @@ const MyPage = () => {
 
   useEffect(() => {
     getRank();
-    console.log('????????????',rankImg);
   }, []);
 
   const modify = () => {
@@ -320,21 +336,22 @@ const MyPage = () => {
 
   return (
     <div className="mypage">
-
       <div className="profile-card">
-            <div className="profile-image-container">
-              <img src={rankImg} alt="Profile" className="profile-image" />
-            </div>
-            <div className="profile-info">
-              <div className="profile-rank">등급 : {rankName}</div>
-              <div className="profile-name">경험치 : {userExp}</div>
-            </div>
-            <div className='mypage-info-function'>
-              <button className='mypage-info-modify' onClick={modify}>회원 정보 수정</button>
-              <button className='mypage-info-withdraw' onClick={withdraw}>회원 탈퇴</button>
-            </div>
+        <div className="profile-image-container">
+          <img src={rankImg} alt="Profile" className="profile-image" />
+        </div>
+        <div className="profile-info">
+          <div className='profile-nickname'>{userNick}</div>
+          <div className="profile-rank">등급 : {rankName}</div>
+          <div className="profile-name">경험치 : {userExp}</div>
+        </div>
+
+        <div className='mypage-info-function'>
+        <button className='mypage-info-modify' onClick={modify}>회원 정보 수정</button>
+        <button className='mypage-info-withdraw' onClick={withdraw}>회원 탈퇴</button>
       </div>
-    
+      </div>
+
       <PaginatedList 
         title="내가 쓴 글"
         fetchUrl="http://localhost:4040/api/v1/mypage/getmyboardlist"
@@ -353,8 +370,12 @@ const MyPage = () => {
         renderItem={renderMyCourseItem}
         itemsPerPage={1}
       />
+    <Footer className="footer"/>
     </div> 
+
   );
+
+
 };
 
 export default MyPage;
