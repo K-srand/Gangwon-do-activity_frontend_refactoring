@@ -20,7 +20,7 @@ const LoginDetail = () => {
 
     const handleLogin = (e) => {
         e.preventDefault();
-        axios.post('http://localhost:4040/api/v1/auth/sign-in', {
+        axios.post('https://gangwonactivity.site/api/v1/auth/sign-in', {
             userId: userId,
             userPassword: userPassword
         })
@@ -81,7 +81,7 @@ const LoginDetail = () => {
                         />
 
                         <div className='login-modal-main-login-accept'>
-                            <button type="submit">로그인</button>
+                            <button className="login-detail-button" type="submit">로그인</button>
                         </div>
                     </form>
                 </div>

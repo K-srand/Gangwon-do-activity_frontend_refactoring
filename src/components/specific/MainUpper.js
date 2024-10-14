@@ -13,17 +13,20 @@ function MainUpper({ token }) {
   const [locations, setLocations] = useState([]);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [items, setItems] = useState([]);
+  const [fetchedItemlist, setItemlist] = useState([]);
   const [mapInitialized, setMapInitialized] = useState(false);
   const [userId, setUserId] = useState(null);
   //사용자 추천 코스
   const [myCourseNo, setMyCourseNo] = useState(null);
   const [myCourse, setMyCourse] = useState([]);
   const [userNick, setUserNick] = useState([]);
-  const [boardNo, setBoardNo] = useState([]);
+
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedPlaceInfo, setSelectedPlaceInfo] = useState(null);
 
   // 로그인 여부 확인
   useEffect(() => {
-    axios.get('http://localhost:4040/api/v1/user', {
+    axios.get('https://gangwonactivity.site/api/v1/user', {
       headers: {
         'Authorization': `Bearer ${token}`
       }
@@ -39,7 +42,7 @@ function MainUpper({ token }) {
 
   useEffect(() => {
     // 추천 10개 액티비티 호출
-    axios.get('http://localhost:4040/api/v1/getjson/getplace')
+    axios.get('https://gangwonactivity.site/api/v1/getjson/getplace')
       .then(response => {
         console.log('Fetched Data:', response.data);
         setLocations(response.data);
@@ -47,18 +50,23 @@ function MainUpper({ token }) {
           id: place.placeNo,
           img: place.firstImage,
           title: place.placeTitle,
+          placeMapx: place.mapx,
+          placeMapy: place.mapy
         }));
         setItems(fetchedItems);
+        setItemlist(fetchedItems);
       })
       .catch(error => console.error('Error fetching locations:', error));
   }, []);
 
+
+  
   // 네이버 맵 API 호출
   useEffect(() => {
     const loadNaverMapScript = async () => {
       if (!window.naver) {
         try {
-          const response = await axios.get('http://localhost:4040/api/v1/getmap');
+          const response = await axios.get('https://gangwonactivity.site/api/v1/getmap');
           const script = document.createElement('script');
           script.type = 'text/javascript';
           script.src = response.data;
@@ -94,10 +102,10 @@ function MainUpper({ token }) {
           map,
           title: location.placeTitle
         });
-
+        
         // 플레이스 타이틀 호출
         naver.maps.Event.addListener(marker, 'click', () => {
-          axios.post('http://localhost:4040/api/v1/getjson/getplacetitle', {
+          axios.post('https://gangwonactivity.site/api/v1/getjson/getplacetitle', {
             placeTitle: location.placeTitle,
             placeMapx: location.mapx,
             placeMapy: location.mapy
@@ -109,10 +117,11 @@ function MainUpper({ token }) {
               console.error('There was an error!', error);
             });
         });
+
       });
 
       // 강원도 행정구역 데이터 레이어 호출
-      axios.get('http://localhost:4040/resources/json/gangwondo.json')
+      axios.get('https://gangwonactivity.site/resources/json/gangwondo.json')
         .then(response => {
           const geojson = response.data;
           map.data.addGeoJson(geojson);
@@ -128,29 +137,13 @@ function MainUpper({ token }) {
   }, [locations, mapInitialized]);
 
   useEffect(() => {
-    if (mapInitialized) {
+    if (mapInitialized && locations.length > 0) {
       initializeMap();
     }
-  }, [mapInitialized, initializeMap]);
+  }, [mapInitialized, locations, initializeMap]);
+  
 
-  // 선택한 위치 중심으로 카테고리별 추천 장소 출력
-  const category = (value) => {
-    axios.post('http://localhost:4040/api/v1/getjson/getplacecat', {
-      placeCat: value
-    })
-      .then(response => {
-        console.log('Category Data:', response.data);
-        const fetchedItems = response.data.map(place => ({
-          id: place.placeNo,
-          img: place.firstImage,
-          title: place.placeTitle,
-        }));
-        setItems(fetchedItems);
-      })
-      .catch(error => {
-        console.error('There was an error!', error);
-      });
-  };
+  
 
   // 장소 리스트 슬라이드
   const nextItems = () => {
@@ -168,7 +161,7 @@ function MainUpper({ token }) {
   // 찜 버튼
   const favoriteplace = (item) => {
     if (userId) {
-      axios.post('http://localhost:4040/api/v1/getmyfavorite', {
+      axios.post('https://gangwonactivity.site/api/v1/getmyfavorite', {
         placeNo: item.id,
         userId: userId
       })
@@ -196,15 +189,13 @@ function MainUpper({ token }) {
   // 첫 번째 요청을 보내는 비동기 함수를 정의합니다.
   const fetchFirstData = async () => {
       try {
-          const firstResponse = await axios.post('http://localhost:4040/api/v1/recommend', {});
+          const firstResponse = await axios.post('https://gangwonactivity.site/api/v1/recommend', {});
           const courseNo = firstResponse.data.slice(0, 3).map(item => item.myCourseNo);
           const nickname = firstResponse.data.slice(0, 3).map(item => item.userNick);
-          const noBoard = firstResponse.data.slice(0, 3).map(item => item.boardNo);
           setMyCourseNo(courseNo);
           setUserNick(nickname);
           console.log("data " , firstResponse.data);
           console.log("no", typeof(firstResponse.data[0].boardNo));
-          setBoardNo(noBoard);
           console.log("!!!!!!!!!!!!!!!", courseNo);
 
       } catch (err) {
@@ -219,7 +210,7 @@ function MainUpper({ token }) {
 
           for (let i = 0; i < myCourseNo.length; i++) {
               const courseNo = myCourseNo[i];
-              const secondResponse = await axios.get(`http://localhost:4040/api/v1/recommend/${courseNo}`);
+              const secondResponse = await axios.get(`https://gangwonactivity.site/api/v1/recommend/${courseNo}`);
               const courseDetails = secondResponse.data.slice(0, 4).map(imageObj => ({
                   placeTitle: imageObj.placeTitle,
                   firstImage2: imageObj.firstImage2,
@@ -235,82 +226,85 @@ function MainUpper({ token }) {
   };
 
   useEffect(() => {
-      fetchFirstData();
+    fetchFirstData();
   }, []);
 
   useEffect(() => {
-      fetchSecondData();
+    fetchSecondData();
   }, [myCourseNo]);
   
   const recommend = () => {
-      window.location.href = `/recommend`;
+    window.location.href = `/recommend`;
   }
 
   //플레이스 모달창
-  const [isModalOpen, setIsModalOpen] = useState(false);
-    const [selectedCourseInfo, setSelectedCourseInfo] = useState(null);
+  const openModal = (item) => {
+    setSelectedPlaceInfo(item);
+    axios.post('https://gangwonactivity.site/api/v1/getjson/getplacetitle', {
+      placeTitle: item.title,
+      placeMapx: item.placeMapx,
+      placeMapy: item.placeMapy
+    })
+    .then(response => {
+      console.log(response.data);
+    })
+    .catch(error => {
+      console.error('There was an error!', error);
+    });
+    setIsModalOpen(true);
+  };
 
-    const openModal = () => {
-        setIsModalOpen(true);
-    };
-
-    const closeModal = () => {
-        setIsModalOpen(false);
-    };
-
-    const handleCourseSelect = (courseInfo) => {
-        console.log('선택된 코스 정보:', courseInfo);
-        setSelectedCourseInfo(courseInfo);
-        setIsModalOpen(false);
-    };
-
+  const closeModal = () => {
+      setIsModalOpen(false);
+      setSelectedPlaceInfo(null);
+  };
 
   return (
     <div className='mainupper'>
       <div className='main-image'>
-      <img className='main' src={main} alt="main" />
-      </div>
-      <div className='recommendplace'>
-        <h2>강추에서 추천하는 장소!</h2>
+        <img src={main} className="img-fluid" alt="main" />
       </div>
       {/* 맵 api */}
-      <div className="map-containers">
-        <div ref={mapContainer} className="map"></div>
-        <div className="button-container">
-          <button onClick={() => category('activity')} className="button">액티비티</button>
-          <button onClick={() => category('restaurant')} className="button">식당</button>
-          <button onClick={() => category('cafe')} className="button">카페</button>
-          <button onClick={() => category('tour')} className="button">관광지</button>
-          <button onClick={() => category('accommodation')} className="button">숙박</button>
-        </div>
+   
+      <div className="card">
+        <div ref={mapContainer} className="naverMainMap"></div>
       </div>
+   
 
-      {/* 장소 리스트 */}
-      <div className="main-cards-container">
-        <div className="mainpage-carousel-container">
-          <button className={`prev-button ${currentIndex === 0 ? 'hidden' : ''}`} onClick={prevItems}>
-            <img src={leftArrow} alt="Previous" />
-          </button>
-
-          <div className="carousel">
-            {items.slice(currentIndex, currentIndex + 4).map((item) => (
-              <div key={item.id} className="mainpage-carousel-item">
-                <div className="image-container">
-                  <img className="place" src={item.img || defaultImage} alt={item.title} onError={(e) => e.target.style.display = 'none'} />
-                  <img className="favoriteplace" src={favorite} alt="favorite" onClick={() => favoriteplace(item)} />
-                </div>
-                <p>{item.title}</p>
+    {/* 2행 5열 이미지 표시 */}
+    <div className="card">
+    <div className='recommendplace'>
+        <h2>강추에서 추천하는 장소!</h2>
+      </div>
+      
+      <div className="image-grid-container">
+        {fetchedItemlist.slice(0, 10).map((item) => (
+          <div className="card" key={item.id}>
+            <div className="image-grid-item">
+              <img
+                src={item.img || defaultImage} // 이미지가 없으면 기본 이미지 표시
+                alt={item.title}
+                className="card-img-top card-img-top-main"
+                onClick={() => openModal(item)} // 클릭 시 openModal 호출
+              />
+              <img className="favoriteplace" src={favorite} alt="favorite" onClick={() => favoriteplace(item)} />
+              <h5 className="card-title">{item.title}</h5>
+              <div className="card-body">
+                <p className="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
               </div>
-            ))}
+            </div>
           </div>
-          <button className={`next-button ${currentIndex + 4 >= items.length ? 'hidden' : ''}`} onClick={nextItems}>
-            <img src={rightArrow} alt="Next" />
-          </button>
-        </div>
+        ))}
       </div>
 
-      <button className="upload-button" onClick={openModal}>플레이스 모달창 테스트용</button><br />{isModalOpen && <MainPlaceModal closeModal={closeModal} onCourseSelect={handleCourseSelect} />}
-
+      {/* 플레이스 모달 */}
+      {isModalOpen && selectedPlaceInfo && (
+        <MainPlaceModal
+          closeModal={closeModal}
+          selectedPlaceInfo={selectedPlaceInfo}
+        />
+      )}
+    </div>
       {/* 사용자 추천 코스 */}
       <div className='recommend-course'>
         <div className='recommendplace'>

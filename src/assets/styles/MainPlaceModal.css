@@ -45,10 +45,10 @@
 .place-modal-map {
     width: 500px; 
     height: 400px; 
-    z-index: 9999; 
+    z-index: 99999; 
     position: relative; 
     left: -30%;
-    margin-top: 5%;
+    margin-top: 2%;
 }
   
 .place-modal-map-containers {
@@ -61,6 +61,45 @@
     margin-top: 30px;
     position: relative;
     z-index: 5; 
-    overflow: hidden;
 }
-  
+
+.button-container {
+    position: relative; 
+    left: -21%;
+}
+
+.recommendPlaceModal {
+    display: flex;
+    justify-content: center;
+    width: 40%;
+    height: 500px;
+    margin: auto;
+    margin-top: -55%;
+    position: relative;
+    left: 25%;
+    z-index: 5; 
+}
+
+.card-img-top-modal {
+    width : 100%;
+    height : 250px;
+}
+
+.card-title-modal {
+    margin-top: 20%;
+}
+
+.carousel-control-next-modal {
+    height : 50px;
+    margin-top: 60%;
+}
+
+.carousel-control-prev-modal {
+    height : 50px;
+    margin-top: 60%;
+}
+
+.carousel-indicator-modal {
+    background-color: #ccc;
+    margin-top: 10%;
+}
